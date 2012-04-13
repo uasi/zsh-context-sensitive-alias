@@ -39,7 +39,6 @@ function csa_set_context {
 function _csa_set_alias_for_context {
 	#DEBUG warn '-> _csa_set_alias_for_context'
 	local cmd ctx name names
-	#_csa_reset_alias
 	for ctx in $*; do
 		names=${CSA_CTX2NAME[$ctx]}
 		for name in ${=names}; do
@@ -59,6 +58,6 @@ function _csa_reset_alias {
 		unalias ${a%%\=*}
 	done
 	for name2cmd in ${(f)CSA_ORIGINAL_ALIAS}; do
-		eval "alias ${name2cmd%%\=*}=${name2cmd#*\=}"
+		eval "alias $name2cmd"
 	done
 }
