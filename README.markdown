@@ -4,10 +4,15 @@
 
 使い方：
 
+    # 初期化
     source csa.zsh
     csa_init
+    
+    # コンテキストごとにエイリアスを定義
     csalias ctx_git st 'git status'
     csalias ctx_hg st 'hg status'
+    
+    # コンテキストをセットするとエイリアスが切り替わる
     
     csa_set_context ctx_git
     st
@@ -24,4 +29,4 @@
     st
     > zsh: command not found: st
 
-より実用的なサンプルについては sample-zshrc.zsh をご覧ください。
+`cd` と同時にコンテキストを変えるなど、より実用的なサンプルについては sample-zshrc.zsh をご覧ください。
