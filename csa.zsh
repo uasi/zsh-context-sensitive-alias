@@ -13,9 +13,23 @@ export CSA_NAME2CMD
 
 #DEBUG function warn { print -P "%F{red}csa: $*%f" }
 
-function csalias { # (ctx, name, cmd)
-	CSA_CTX2NAME[$1]="${CSA_CTX2NAME[$1]} $2"
-	CSA_NAME2CMD[$1.$2]="$3"
+function csalias {
+	local ctx=$1 name=$2 cmd=$3
+	local names
+	if [[ -z "$ctx" ]]; then
+		for k in ${(k)CSA_CTX2NAME}; do
+			echo $k:${CSA_CTX2NAME[$k]}
+			#       ^ Note that the value is preceded by a space
+		done
+	elif [[ -z "$name" ]]; then
+		names="${CSA_CTX2NAME[$ctx]} $name"
+		for n in ${=names}; do
+			echo "$ctx: $n='${CSA_NAME2CMD[$ctx.$n]}'"
+		done
+	else
+		CSA_CTX2NAME[$ctx]="${CSA_CTX2NAME[$ctx]} $name"
+		CSA_NAME2CMD[$ctx.$name]=$cmd
+	fi
 }
 
 function csa_init {
@@ -44,7 +58,7 @@ function _csa_set_alias_for_context {
 		for name in ${=names}; do
 			#DEBUG warn "($ctx) alias $name='${CSA_NAME2CMD[$ctx.$name]}'"
 			cmd=${CSA_NAME2CMD[$ctx.$name]}
-			alias $name="$cmd"
+			alias $name=$cmd
 		done
 	done
 }
