@@ -46,7 +46,7 @@ function csa_set_context {
 
 	if [[ "x$CSA_CONTEXT" != "x$CSA_PREV_CONTEXT" ]]; then
 		_csa_reset_alias
-		_csa_set_alias_for_context default $CSA_CONTEXT
+		_csa_set_alias_for_context default ${=CSA_CONTEXT}
 	fi
 }
 
