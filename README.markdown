@@ -4,29 +4,51 @@
 
 使い方：
 
-    # 初期化
-    source csa.zsh
-    csa_init
-    
-    # コンテキストごとにエイリアスを定義
-    csalias ctx_git st 'git status'
-    csalias ctx_hg st 'hg status'
-    
-    # コンテキストをセットするとエイリアスが切り替わる
-    
-    csa_set_context ctx_git
-    st
-    > # On branch master
-    > ...
-    
-    csa_set_context ctx_hg
-    st
-    > A file1
-    > ? file2
-    > ...
-    
-    csa_set_context ctx_nonexistent
-    st
-    > zsh: command not found: st
+```
+# {{{ in ~/.zshrc
 
-`cd` と同時にコンテキストを変えるなど、より実用的なサンプルについては sample-zshrc.zsh をご覧ください。
+# 初期化
+source csa.zsh
+csa_init
+    
+# コンテキストを指定してエイリアスを定義する
+# csalias <context> <alias> <command>
+csalias git st 'git status'
+csalias hg st 'hg status'
+csalias rake ra 'rake'
+csalias bundler ra 'bundle exec rake'
+
+# cd 先のリポジトリの種類に合わせてコンテキストを設定する（詳細は sample-zshrc.zsh で）
+function chpwd() { ... }
+
+# }}} 
+
+# Git リポジトリに cd すると st == git status になる
+$ cd git-repo
+$ st
+# On branch master
+nothing to commit (working directory clean)
+
+# Hg リポジトリに cd すると st == hg status になる
+$ cd hg-repo
+$ st
+? readme.txt
+
+# リポジトリでないディレクトリでは st は未定義
+$ cd not-a-repo
+$ st
+zsh: command not found: st
+
+# Rakefile があるディレクトリに cd すると ra == rake になる
+$ cd some-ruby-lib
+$ ra --version
+rake, version 9.2.2
+
+# Gemfile があるディレクトリに cd すると ra == bundle exec rake になる
+# （同じディレクトリに Rakefile があっても ra == rake にはならない）
+$ cd some-rails-proj
+$ ra --version
+rake, version 9.1.0
+```
+
+設定方法については `sample-zshrc.zsh` をご覧ください。
